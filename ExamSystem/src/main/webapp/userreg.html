@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>用户注册</title>
+	</head>
+	<style type="text/css">
+		#mydiv{
+			position: absolute;
+			left: 500px;
+			top:200px
+		}
+	</style>
+	<body>
+		<script type="text/javascript">
+			/*			
+			（1）用户名不能为空
+			（2）用户名必须在6-14位之间
+			（3）用户名只能有数字和字母组成，不能含有其它符号（正则表达式）
+			（4）密码和确认密码一致，邮箱地址合法。
+			（5）统一失去焦点验证
+			（6）错误提示信息统一在span标签中提示，并且要求字体12号，红色。
+			（7）文本框再次获得焦点后，清空错误提示信息，如果文本框中数据不合法要求清空文本框的value
+			（8）最终表单中所有项均合法方可提交*/
+			window.onload = function(){
+				var username = document.getElementById("username");	
+				var password = document.getElementById("password");
+				var password1 = document.getElementById("password1");
+				var email = document.getElementById("email");
+				var submit11 = document.getElementById("submit11");
+				var clear = document.getElementById("clear");
+				var refl1 = document.getElementById("refl1");
+				var refl2 = document.getElementById("refl2");
+				var refl3 = document.getElementById("refl3");
+				var refl4 = document.getElementById("refl4");
+				
+				username.onblur = function(){
+					if(username.value=="")
+							refl1.innerHTML = "<font color='red'>用户名不能为空！</font>";
+					else if(username.value.toString().length>14||username.value.toString().length<6)
+						refl1.innerHTML = "<font color='red'>用户名必须在6-14位之间！</font>";
+					else if(/^[A-Za-z0-9]+$/.test(username.value))
+						refl1.innerHTML = "<font color='red'>通过！</font>";
+					else
+						refl1.innerHTML = "<font color='red'>用户名只能有数字和字母组成，不能含有其它符号！</font>";
+				}
+				username.onfocus = function(){
+					if(username.value.toString().length>14||username.value.toString().length<6||!/^[A-Za-z0-9]+$/.test(username.value))
+							username.value="";
+					refl1.innerHTML = "";
+				}
+				
+				password.onblur = function(){
+					if(password.value=="")
+						refl2.innerHTML = "<font color='red'>请输入密码</font>";
+					else 
+						refl2.innerHTML = "<font color='red'>通过！</font>";
+				}
+				password.onfocus = function(){
+					refl2.innerHTML = "";
+				}
+				
+				password1.onblur = function(){
+					if(password1.value=="")
+						refl3.innerHTML = "<font color='red'>请再次输入密码</font>";
+					else if(password1.value != password.value)
+						refl3.innerHTML = "<font color='red'>两次密码必须相同！</font>";
+					else
+						refl3.innerHTML = "<font color='red'>通过！</font>";
+				}
+				password1.onfocus = function(){
+					if(password1.value != password.value)
+						password1.value="";
+					refl3.innerHTML = "";
+				}
+				
+				email.onblur = function(){
+					if(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email.value))
+						refl4.innerHTML = "<font color='red'>通过！</font>";
+					else
+						refl4.innerHTML = "<font color='red'>请输入正确邮箱</font>";
+				}
+				email.onfocus = function(){
+					if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email.value))
+						email.value="";
+					refl4.innerHTML = "";
+				}
+				
+				submit11.onclick = function(){
+					if(/^[A-Za-z0-9]+$/.test(username.value)&&
+					password1.value == password.value&&
+					password.value!=""&&
+					/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email.value)){
+						var form = document.getElementById("myform");
+						form.action = "useradd.do";
+						form.submit();
+					}
+					
+				}
+			}
+		</script>
+		
+		<div id="mydiv">
+			<form id="myform" method="post">
+				<table id="mytable" align="center">
+					<tr>
+						<td align="center">用户名</td>
+						<td><input type="text" id="username" name="username" /><span id="refl1"></span></td>						
+					</tr>
+					<tr>
+						<td align="center">密码</td>
+						<td><input type="password" id="password" name="userpassword"/><span id="refl2"></span></td>						
+					</tr>
+					<tr>
+						<td align="center">确认密码</td>
+						<td><input type="password" id="password1" /><span id="refl3"></span></td>
+					</tr>
+					<tr>
+						<td align="center">性别</td>
+						<td><input type="radio" name="sex" value = "男"/>男<input type="radio" name="sex" value="女"/>女</td>
+					</tr>
+					<tr>
+						<td align="center">邮箱</td>
+						<td><input type="text" id="email" name="email"/><span id="refl4"></span></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="button" id="submit11" value="注册"/>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="reset" id="clear11" value="清空数据 "/>
+						</td>
+					</tr>
+				</table>
+				
+			</form>
+		</div>
+	</body>
+</html>

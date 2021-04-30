@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>新增试题</title>
+		<style type="text/css">
+			#mydiv{
+				position: absolute;
+				left: 40%;
+				top: 20%;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+		</script>
+		<div id="mydiv">
+			<h2 style="color: red;">新增试题</h2>
+			<form action="questionadd.do">
+				<table>
+					<tr>
+						<td>问题：</td><td><input type="text" name="question"></input></td>
+					</tr>
+					<tr>
+						<td>A：</td><td><input type="text" name="A"></input></td>
+					</tr>
+					<tr>
+						<td>B：</td><td><input type="text" name="B"></input></td>
+					</tr>
+					<tr>
+						<td>C：</td><td><input type="text" name="C"></input></td>
+					</tr>
+					<tr>
+						<td>D：</td><td><input type="text" name="D"></input></td>
+					</tr>
+					<tr>
+						<td>答案：</td>
+						<td>
+							<input type="radio" name="answer" value="A">A</input>
+							<input type="radio" name="answer" value="B">B</input>
+							<input type="radio" name="answer" value="C">C</input>
+							<input type="radio" name="answer" value="D">D</input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><input type="submit" value="增加试题"></input></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</body>
+</html>

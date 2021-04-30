@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.UserDao">
+
+    <select id="selectName" resultType="domain.User">
+		select * from examsystem where username = #{name}
+    </select>
+    
+    <select id="selectYanZheng" resultType="domain.User">
+		select * from examsystem where username = #{name} and userpassword = #{password}
+    </select>
+    
+    <select id="selectAll" resultType="domain.User">
+		select * from examsystem
+    </select>
+
+	<update id="update">
+		update examsystem set userpassword = #{password} where username = #{name}
+	</update>
+	
+	<delete id="delete">
+		delete from examsystem where username = #{name}
+	</delete>
+	
+    <insert id="insert">
+        insert into examsystem(username,userpassword,email,sex) value(#{username},#{userpassword},#{email},#{sex})
+    </insert>
+    
+</mapper>
