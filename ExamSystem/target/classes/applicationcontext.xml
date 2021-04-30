@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       https://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx.xsd ">
+      
+      <!-- 引入properties文件 --> 
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+       
+       <!-- 建立连接池 -->
+       <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+       		<property name="url" value="${jdbc.url}"></property>
+       		<property name="username" value="${jdbc.username}"></property>
+       		<property name="password" value="${jdbc.password}"></property>
+       </bean>
+       
+       <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+       		<property name="dataSource" ref="dataSource"></property>
+       		<property name="configLocation" value="classpath:mybatis.xml"></property>
+       </bean>
+       
+       <!-- 创建代理对象 -->
+       <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+       		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+       		<property name="basePackage" value="dao"></property>
+       </bean>
+       
+       <!-- 给相应对象赋值 -->
+       <bean id="questionService" class="server.questionservice.imp.QuestionServiceImp">
+       		<constructor-arg name="userDao" ref="userDao"></constructor-arg>
+       		<constructor-arg name="questionDao" ref="questionDao"></constructor-arg>
+       </bean>
+       
+		<context:component-scan base-package="server" /><!-- 扫描component注解 -->
+		<context:component-scan base-package="controller" />
+		
+		<!-- 设置事务管理对象 -->
+       <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+       		<property name="dataSource" ref="dataSource"></property>
+       </bean>
+       
+       <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
+       
+       <tx:advice id="service" transaction-manager="transactionManager">
+       		<tx:attributes>
+       			<tx:method name="select*" propagation="REQUIRED" isolation="DEFAULT"
+       			rollback-for="java.lang.NullPointerException"/>
+       			<tx:method name="update*"/>
+       			<tx:method name="delete*"/>
+       			<tx:method name="insert*"/>
+       		</tx:attributes>
+       </tx:advice>
+       
+       <aop:config>
+       		<aop:pointcut expression="execution(* *..QuetionServiceImp.*(..))" id="questionPoint"/>
+       		<aop:advisor advice-ref="service" pointcut-ref="questionPoint"/>
+       </aop:config>
+       
+       
+       <!-- 寻找事务注解开始事务 -->
+		<tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>
