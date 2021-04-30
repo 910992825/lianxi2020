@@ -1,5 +1,0 @@
-question\Question.class
-utils\MybatisUtil.class
-dao\QuestionDao.class
-dao\UserDao.class
-user\User.class
